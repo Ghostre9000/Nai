@@ -9,7 +9,7 @@ int main(int argc, char **argv){
     using namespace std;
     map<string,function<string(vector<string>)>> map;
     map[""] = [](vector<string> w){
-        return "Jestem dumnym programem który liczy rzeczy.\nDodaj parametry:\n[add][liczba][liczba] lub \n[mod][liczba][liczba] lub \n[sin][liczba] \naby dostac wynik";
+        return "Dodaj parametry:";
     };
     map["add"] = [](vector<string> w){
         string a = w.at(2);
@@ -32,7 +32,7 @@ int main(int argc, char **argv){
     try{
         cout<<f(argumenty);
     }catch (exception &e){
-        cout<<"error\nDodaj parametry:\n[add][liczba][liczba] lub \n[mod][liczba][liczba] lub \n[sin][liczba] \naby dostac wynik";
+        cout<<"error\nDodaj parametry:";
     }
     return 0;
 }
