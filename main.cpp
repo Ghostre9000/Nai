@@ -1,34 +1,38 @@
-#include <any>
-#include <functional>
 #include <iostream>
+#include <functional>
 #include <map>
-#include <string>
-#include <vector>
-#include <cmath>
-using mojamapa_t = std::map<std::string , std::string>;
-using mojafunkcja_t = std::function<double(std::vector<double>)>;
-void wypisz(mojamapa_t mapa, mojafunkcja_t fun) {
+#include <math.h>
+using mapstring = std::map<std::string,std::string>;
+using functionstring = std::function<std::string(std::string,std::string)>;
+
+int main(int argc, char **argv){
     using namespace std;
-    for (auto kv : mapa) {
-        auto [k, v] = kv;
-        cout << "klucz: " << k << "; wartosc " << fun(v) << endl;
-    }
-}
-int main(int argc, char **argv) {
-    using namespace std;
-    map<string , string> mapa = {{"Key", "Value"}};
-    map<string, mojafunkcja_t> formatery;
-    formatery["mod"] = [](vector<double> x) { return fmod(x[0],x[1]); };
-    formatery["add"] = [](vector<double> x) { return x[0]+x[1]; };
-    formatery["sin"] = [](vector<double> x) { return sin(x[0]); };
-    try {
-        vector<string> argumenty(argv, argv + argc);
-        auto selected_f = argumenty.at(1);
-        wypisz(mapa, formatery.at(selected_f));
-    } catch (std::out_of_range aor) {
-        cout << "podaj argument. Dostepne to: ";
-        for (auto [k, v] : formatery) cout << " " << k;
-        cout << endl;
+    map<string,function<string(vector<string>)>> map;
+    map[""] = [](vector<string> w){
+        return "Jestem dumnym programem który liczy rzeczy.\nDodaj parametry:\n[add][liczba][liczba] lub \n[mod][liczba][liczba] lub \n[sin][liczba] \naby dostac wynik";
+    };
+    map["add"] = [](vector<string> w){
+        string a = w.at(2);
+        string b = w.at(3);
+        a = to_string(stof(a)+stof(b));
+        return a;};
+    map["mod"] = [](vector<string> w){
+        string a = w.at(2);
+        string b = w.at(3);
+        return to_string(stoi(a)%stoi(b));
+        };
+    map["sin"] = [](vector<string> w){
+        string a = w.at(2);
+        double sinus = stod(a);
+        sinus = sin(sinus);
+        return to_string(sinus);
+        };
+    vector<string> argumenty(argv, argv + argc);
+    function f = map.at(argumenty.at(1));
+    try{
+        cout<<f(argumenty);
+    }catch (exception &e){
+        cout<<"error\nDodaj parametry:\n[add][liczba][liczba] lub \n[mod][liczba][liczba] lub \n[sin][liczba] \naby dostac wynik";
     }
     return 0;
 }
